@@ -31,7 +31,7 @@ export default class Hangman extends Component<HangmanProps, HangmanStates> {
       hangmanSecret: generateSercret(this.props.hangmanSecretLength)
     })
   }
-  getHangmanStatus = (remaing: number, status: HangmanStatus): JSX.Element => {
+  getHangmanState = (remaing: number, status: HangmanStatus): JSX.Element => {
     let msg = ''
     if (remaing === 0) {
       msg = 'Looser'
@@ -42,7 +42,7 @@ export default class Hangman extends Component<HangmanProps, HangmanStates> {
       <div>
         <h1>{msg}</h1>
         <button style={{ width: 150, height: 40 }} onClick={this.playAgain}>
-          Play Again
+          Play Again?
         </button>
       </div>
     )
@@ -107,22 +107,25 @@ export default class Hangman extends Component<HangmanProps, HangmanStates> {
     const { hangmanImages } = this.props
     console.log(hangmanWord)
     return (
-      <div className="Hangman">
+      <div className='Hangman'>
         <h1>Hangman</h1>
         {/* Hangman img */}
         <img
           src={hangmanImages[hangmanImageIndex]}
-          alt={`ìmg${hangmanImageIndex}`}
+          alt={`img${hangmanImageIndex}`}
         ></img>
 
-        <div className="Hangman-word">
+        <div className='Hangman-word'>
           {hangmanWord.map((w, i) => (
             <span key={i}>{w}</span>
           ))}
         </div>
-        {/* div.Hangman-word */}
+        {/* div.Hangman-word  */}
+        {hangmanStatus === HangmanStatus.runing && (
+          <p style={{ marginTop: -10 }}>Remaing try :{hangmanTryNum} </p>
+        )}
         {hangmanTryNum === 0 && (
-          <div className="Hangman-word-secret">
+          <div className='Hangman-word-secret'>
             <span>Secret Was:</span>
             {hangmanSecret.split('').map((s, i) => (
               <span key={i}>{s}</span>
@@ -132,7 +135,7 @@ export default class Hangman extends Component<HangmanProps, HangmanStates> {
 
         {/* div.Hangman-btns */}
         {hangmanTryNum > 0 && hangmanStatus === HangmanStatus.runing ? (
-          <div className="Hangman-btns">
+          <div className='Hangman-btns'>
             {hangmanBtns.map((b, i) => (
               <button
                 key={i}
@@ -144,7 +147,7 @@ export default class Hangman extends Component<HangmanProps, HangmanStates> {
             ))}
           </div>
         ) : (
-          this.getHangmanStatus(hangmanTryNum, hangmanStatus)
+          this.getHangmanState(hangmanTryNum, hangmanStatus)
         )}
       </div>
     )
